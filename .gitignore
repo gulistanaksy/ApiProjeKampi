@@ -1,0 +1,66 @@
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build sonuçları
+bin/
+obj/
+out/
+[Bb]uild/
+[Ll]og/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+## Test sonuçları
+[Tt]est[Rr]esult*/
+*.VisualState.xml
+*.coverage
+*.coveragexml
+
+## Paketler
+*.nupkg
+*.snupkg
+packages/
+*.nuspec
+project.lock.json
+
+## Rider / ReSharper
+.idea/
+*.DotSettings.user
+
+## EF Core migrations designer files
+*Migrations/*Designer.cs
+
+## Publish çıktıları
+publish/
+wwwroot/dist/
+wwwroot/node_modules/
+
+## Log ve temp dosyaları
+*.log
+*.tlog
+*.tmp
+*.bak
+*.swp
+
+## OS spesifik dosyalar
+.DS_Store
+Thumbs.db
+
+## Dotnet tools
+.dotnet-tools/
+
+## Secret config
+appsettings.*.json
+secrets.json
+
+
+## EF Core Migrations (tamamını ignore et)
+Migrations/

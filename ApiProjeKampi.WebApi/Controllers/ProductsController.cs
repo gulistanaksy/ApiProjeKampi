@@ -34,6 +34,30 @@ namespace ApiProjeKampi.WebApi.Controllers
             await _context.SaveChangesAsync();
             return Ok("Ürün eklendi.");
         }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var value = await _context.Products.FindAsync(id);
+            _context.Products.Remove(value);
+            await _context.SaveChangesAsync();
+            return Ok("Ürün silindi.");
+        }
+        [HttpGet("GetProduct")]
+        public async Task<IActionResult> GetProduct(int id)
+        {
+            var value = await _context.Products.FindAsync(id);
+            return Ok(value);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct(Product product)
+        {
+            var validationResult = await _validator.ValidateAsync(product);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors.Select(x => x.ErrorMessage));
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+            return Ok("Ürün Güncellendi.");
+        }
 
     }
 }

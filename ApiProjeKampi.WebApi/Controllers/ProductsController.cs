@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using ApiProjeKampi.WebApi.Entities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using ApiProjeKampi.WebApi.Dtos.ProductDtos;
+using AutoMapper;
 
 namespace ApiProjeKampi.WebApi.Controllers
 {
@@ -13,10 +15,12 @@ namespace ApiProjeKampi.WebApi.Controllers
     {
         private readonly IValidator<Product> _validator;
         private readonly ApiContext _context;
-        public ProductsController(IValidator<Product> validator, ApiContext context)
+        private readonly IMapper _mapper;
+        public ProductsController(IValidator<Product> validator, ApiContext context, IMapper mapper)
         {
             _validator = validator;
             _context = context;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> ProductList()
@@ -28,8 +32,8 @@ namespace ApiProjeKampi.WebApi.Controllers
         public async Task<IActionResult> CreateProduct(Product product)
         {
             var validationResult = await _validator.ValidateAsync(product);
-            if(!validationResult.IsValid)
-                return BadRequest(validationResult.Errors.Select(x=> x.ErrorMessage));
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors.Select(x => x.ErrorMessage));
             await _context.Products.AddAsync(product);
             await _context.SaveChangesAsync();
             return Ok("Ürün eklendi.");
@@ -58,6 +62,22 @@ namespace ApiProjeKampi.WebApi.Controllers
             await _context.SaveChangesAsync();
             return Ok("Ürün Güncellendi.");
         }
-
+        [HttpPost("CreateProductWithCategory")]
+        public async Task<IActionResult> CreateProductWithCategory(CreateProductDto createProduct)
+        {
+            var value = _mapper.Map<Product>(createProduct);
+            var validationResult = await _validator.ValidateAsync(value);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors.Select(x => x.ErrorMessage));
+            await _context.Products.AddAsync(value);
+            await _context.SaveChangesAsync();
+            return Ok("Ürün eklendi.");
+        }
+        [HttpGet("ProductListWithCategory")]
+        public async Task<IActionResult> ProductListWithCategory()
+        {
+            var values = await _context.Products.Include(x=> x.Category).ToListAsync();
+            return Ok(_mapper.Map<List<ResultProductWithCategoryDto>>(values));
+        }
     }
 }

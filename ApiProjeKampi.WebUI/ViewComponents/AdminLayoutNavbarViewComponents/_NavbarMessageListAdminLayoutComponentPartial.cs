@@ -16,7 +16,7 @@ namespace ApiProjeKampi.WebUI.ViewComponents.AdminLayoutNavbarViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Messages/MessageListByIsReadFalse");
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Messages/MessageListByIsReadFalse");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();

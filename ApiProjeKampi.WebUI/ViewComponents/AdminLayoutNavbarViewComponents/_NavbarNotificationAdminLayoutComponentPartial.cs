@@ -16,7 +16,7 @@ namespace ApiProjeKampi.WebUI.ViewComponents.AdminLayoutNavbarViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Notifications");
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Notifications");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();

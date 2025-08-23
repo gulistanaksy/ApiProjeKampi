@@ -1,5 +1,7 @@
 ﻿using ApiProjeKampi.WebApi.Context;
+using ApiProjeKampi.WebApi.Dtos.CategoryDtos;
 using ApiProjeKampi.WebApi.Entities;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +14,11 @@ namespace ApiProjeKampi.WebApi.Controllers
     public class CategoriesController : ControllerBase
     {
         readonly ApiContext _context;
-        public CategoriesController(ApiContext context)
+        readonly IMapper _mapper;
+        public CategoriesController(ApiContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<IActionResult> CategoryList()
@@ -24,11 +28,12 @@ namespace ApiProjeKampi.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(Category category)
+        public async Task<IActionResult> CreateCategory(CreateCategoryDto createCategoryDto)
         {
-            await _context.Categories.AddAsync(category);
+            var value = _mapper.Map<Category>(createCategoryDto); // createFeatureDto'dan gelen değer Feature'a map ediliyor.
+            await _context.Categories.AddAsync(value);
             await _context.SaveChangesAsync();
-            return (Ok("Kategory eklendi."));
+            return (Ok("Kategori eklendi."));
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteCategory(int id)
@@ -49,12 +54,10 @@ namespace ApiProjeKampi.WebApi.Controllers
             return Ok(category);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateCategory(Category category)
+        public async Task<IActionResult> UpdateCategory(UpdateCategoryDto updateCategoryDto)
         {
-            var value = await _context.Categories.FindAsync(category.CategoryId);
-            if (value == null)
-                return NotFound("Kategori bulunamadı.");
-            value.CategoryName = category.CategoryName;
+            var category = _mapper.Map<Category>(updateCategoryDto);
+            _context.Categories.Update(category);
             await _context.SaveChangesAsync();
             return Ok("Kategori güncellendi.");
         }

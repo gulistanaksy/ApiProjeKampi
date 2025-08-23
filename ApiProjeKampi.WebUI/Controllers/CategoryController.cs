@@ -16,7 +16,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> CategoryList()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Categories");
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Categories");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -38,7 +38,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createCategoryDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7020/api/Categories", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7172/api/Categories", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("CategoryList");
@@ -49,7 +49,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            await client.DeleteAsync("https://localhost:7020/api/Categories?id=" + id);
+            await client.DeleteAsync("https://localhost:7172/api/Categories?id=" + id);
             return RedirectToAction("CategoryList");
         }
 
@@ -57,7 +57,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> UpdateCategory(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Categories/GetCategory?id=" + id);
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Categories/GetCategory?id=" + id);
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var value = JsonConvert.DeserializeObject<GetCategoryByIdDto>(jsonData);
             return View(value);
@@ -70,7 +70,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(updateCategoryDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            await client.PutAsync("https://localhost:7020/api/Categories/", stringContent);
+            await client.PutAsync("https://localhost:7172/api/Categories/", stringContent);
             return RedirectToAction("CategoryList");
         }
     }

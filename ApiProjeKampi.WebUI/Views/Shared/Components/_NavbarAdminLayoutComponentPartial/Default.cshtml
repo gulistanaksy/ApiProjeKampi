@@ -1,0 +1,14 @@
+﻿<div class="navbar-bg"></div>
+<nav class="navbar navbar-expand-lg main-navbar sticky">
+
+    @await Component.InvokeAsync("_NavbarFormInlineAdminLayoutComponentPartial")
+  
+    <ul class="navbar-nav navbar-right">
+        @await Component.InvokeAsync("_NavbarMessageListAdminLayoutComponentPartial")
+
+        @await Component.InvokeAsync("_NavbarNotificationAdminLayoutComponentPartial")
+
+        @await Component.InvokeAsync("_NavbarAccountMenuAdminLayoutComponentPartial")
+
+    </ul>
+</nav>

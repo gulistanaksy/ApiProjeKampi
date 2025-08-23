@@ -1,6 +1,5 @@
 ﻿using ApiProjeKampi.WebApi.Context;
 using ApiProjeKampi.WebApi.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -62,7 +61,7 @@ namespace ApiProjeKampi.WebApi.Controllers
         public async Task<IActionResult> UpdateChef(Chef chef)
         {
             var value = await _context.Chefs.FindAsync(chef.ChefId);
-            if ( value==null)
+            if (value == null)
                 return NotFound("Chef not found.");
             value.NameSurname = chef.NameSurname;
             value.Title = chef.Title;

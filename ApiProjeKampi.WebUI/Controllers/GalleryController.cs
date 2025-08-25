@@ -15,7 +15,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> ImageList()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Images");
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Images");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();

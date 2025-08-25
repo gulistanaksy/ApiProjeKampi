@@ -16,7 +16,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> FeatureList()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Features");
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Features");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -38,7 +38,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createFeatureDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7020/api/Features", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7172/api/Features", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("FeatureList");
@@ -49,7 +49,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> DeleteFeature(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            await client.DeleteAsync("https://localhost:7020/api/Features?id=" + id);
+            await client.DeleteAsync("https://localhost:7172/api/Features?id=" + id);
             return RedirectToAction("FeatureList");
         }
 
@@ -57,7 +57,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> UpdateFeature(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Features/GetFeature?id=" + id);
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Features/GetFeature?id=" + id);
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var value = JsonConvert.DeserializeObject<GetFeatureByIdDto>(jsonData);
             return View(value);
@@ -70,7 +70,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(updateFeatureDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            await client.PutAsync("https://localhost:7020/api/Features/", stringContent);
+            await client.PutAsync("https://localhost:7172/api/Features/", stringContent);
             return RedirectToAction("FeatureList");
         }
 

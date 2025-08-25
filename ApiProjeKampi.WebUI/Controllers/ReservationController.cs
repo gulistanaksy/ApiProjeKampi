@@ -16,7 +16,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> ReservationList()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Reservations");
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Reservations");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -38,7 +38,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createReservationDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7020/api/Reservations", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7172/api/Reservations", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("ReservationList");
@@ -49,7 +49,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> DeleteReservation(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            await client.DeleteAsync("https://localhost:7020/api/Reservations?id=" + id);
+            await client.DeleteAsync("https://localhost:7172/api/Reservations?id=" + id);
             return RedirectToAction("ReservationList");
         }
 
@@ -57,7 +57,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> UpdateReservation(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Reservations/GetReservation?id=" + id);
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Reservations/GetReservation?id=" + id);
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var value = JsonConvert.DeserializeObject<GetReservationByIdDto>(jsonData);
             return View(value);
@@ -70,7 +70,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(updateReservationDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            await client.PutAsync("https://localhost:7020/api/Reservations/", stringContent);
+            await client.PutAsync("https://localhost:7172/api/Reservations/", stringContent);
             return RedirectToAction("ReservationList");
         }
     }

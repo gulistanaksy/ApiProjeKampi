@@ -16,7 +16,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> ContactList()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Contacts");
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Contacts");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -38,7 +38,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createContactDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7020/api/Contacts", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7172/api/Contacts", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("ContactList");
@@ -49,7 +49,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> DeleteContact(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            await client.DeleteAsync("https://localhost:7020/api/Contacts?id=" + id);
+            await client.DeleteAsync("https://localhost:7172/api/Contacts?id=" + id);
             return RedirectToAction("ContactList");
         }
 
@@ -57,7 +57,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> UpdateContact(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Contacts/GetContact?id=" + id);
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Contacts/GetContact?id=" + id);
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var value = JsonConvert.DeserializeObject<GetContactByIdDto>(jsonData);
             return View(value);
@@ -70,7 +70,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(updateContactDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            await client.PutAsync("https://localhost:7020/api/Contacts/", stringContent);
+            await client.PutAsync("https://localhost:7172/api/Contacts/", stringContent);
             return RedirectToAction("ContactList");
         }
     }

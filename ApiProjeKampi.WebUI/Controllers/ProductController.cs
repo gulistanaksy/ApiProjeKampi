@@ -18,7 +18,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> ProductList()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Products/ProductListWithCategory");
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Products/ProductListWithCategory");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -32,7 +32,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> CreateProduct()
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Categories");
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Categories");
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
@@ -53,7 +53,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createProductDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7020/api/Products/CreateProductWithCategory", stringContent);
+            var responseMessage = await client.PostAsync("https://localhost:7172/api/Products/CreateProductWithCategory", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 return RedirectToAction("ProductList");
@@ -64,7 +64,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            await client.DeleteAsync("https://localhost:7020/api/Products?id=" + id);
+            await client.DeleteAsync("https://localhost:7172/api/Products?id=" + id);
             return RedirectToAction("ProductList");
         }
 
@@ -72,7 +72,7 @@ namespace ApiProjeKampi.WebUI.Controllers
         public async Task<IActionResult> UpdateProduct(int id)
         {
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7020/api/Products/GetProducts?id=" + id);
+            var responseMessage = await client.GetAsync("https://localhost:7172/api/Products/GetProducts?id=" + id);
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var value = JsonConvert.DeserializeObject<GetProductByIdDto>(jsonData);
             return View(value);
@@ -85,7 +85,7 @@ namespace ApiProjeKampi.WebUI.Controllers
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(updateProductDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            await client.PutAsync("https://localhost:7020/api/Products/", stringContent);
+            await client.PutAsync("https://localhost:7172/api/Products/", stringContent);
             return RedirectToAction("ProductList");
         }
     }

@@ -10,11 +10,11 @@ namespace ApiProjeKampi.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AboutsContoler : ControllerBase
+    public class AboutsController : ControllerBase
     {
         readonly ApiContext _context;
         readonly IMapper _mapper;
-        public AboutsContoler(ApiContext context, IMapper mapper)
+        public AboutsController(ApiContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

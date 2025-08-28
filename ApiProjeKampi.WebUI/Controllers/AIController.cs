@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;      // Controller ve IActionResult için
-
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace ApiProjeKampi.WebUI.Controllers
 {
@@ -13,7 +12,8 @@ namespace ApiProjeKampi.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRecipeWithOpenAI(string prompt)
         {
-            var apiKey = HttpContext.RequestServices.GetService<IConfiguration>()["GoogleApiKey"];
+            var apiKey = HttpContext.RequestServices
+                                     .GetService<IConfiguration>()["GoogleApiKey"];
             // Google AI Studio'dan aldığın key
 
             using var client = new HttpClient();
@@ -32,15 +32,14 @@ namespace ApiProjeKampi.WebUI.Controllers
             };
 
             var response = await client.PostAsJsonAsync(
-            $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={apiKey}",
-            requestData);
-
-
+                $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={apiKey}",
+                requestData);
 
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadFromJsonAsync<GeminiResponse>();
-                var recipe = result.candidates[0].content.parts[0].text;
+                var recipe = result?.candidates?[0]?.content?.parts?[0]?.text
+                             ?? "Tarif bulunamadı.";
                 ViewBag.recipe = recipe;
             }
             else
@@ -72,8 +71,6 @@ namespace ApiProjeKampi.WebUI.Controllers
         {
             public string text { get; set; }
         }
-
-
 
 
         public class OpenAIResponse

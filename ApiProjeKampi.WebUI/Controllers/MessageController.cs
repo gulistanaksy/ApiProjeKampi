@@ -78,52 +78,53 @@ namespace ApiProjeKampi.WebUI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AsnwerMessageWithOpenAI(int id, string prompt)
+        public async Task<IActionResult> AsnwerMessageWithOpenAI(int id)
         {
+            // 1. Mesajı getir
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7172/api/Messages/GetMessage?id=" + id);
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var value = JsonConvert.DeserializeObject<GetMessageByIdDto>(jsonData);
-            prompt = value.MessageDetails;
+            var prompt = value.MessageDetails;
 
-            var apiKey = "";
+            // 2. Google API key
+            var apiKey = HttpContext.RequestServices
+                                     .GetService<IConfiguration>()["GoogleApiKey"];
 
             using var client2 = new HttpClient();
-            client2.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
 
             var requestData = new
             {
-                model = "gpt-3.5-turbo",
-                messages = new[]
+                contents = new[]
                 {
                     new
                     {
-                        role="system",
-                        content="Sen bir restoran için kullanıcıların göndermiş oldukları mesajları detaylı ve olabildiğince olumlu, müşteri memnunyeti gözeten cevaplar veren bir yapay zeka aracısın. Amacımız kullanıcı tarafından gönderilen mesajlara en olumlu ve mantıklı cevapları sunabilmek."
-                    },
-                    new
-                    {
-                        role="user",
-                        content= prompt
+                        parts = new[]
+                        {
+                            new
+                            {
+                                text = $"Sen bir restoran için kullanıcıların göndermiş oldukları mesajlara detaylı ve olabildiğince olumlu, müşteri memnuniyetini gözeten cevaplar veren bir yapay zekâsın. Kullanıcı mesajı: {prompt}"
+                            }
+                        }
                     }
-                },
-                temperature = 0.5
+                }
             };
 
-            var response = await client2.PostAsJsonAsync("https://api.openai.com/v1/chat/completions", requestData);
+            var response = await client2.PostAsJsonAsync(
+                $"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={apiKey}",
+                requestData);
 
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadFromJsonAsync<OpenAIResponse>();
-                var content = result.choices[0].message.content;
+                var result = await response.Content.ReadFromJsonAsync<GeminiResponse>();
+                var content = result?.candidates?[0]?.content?.parts?[0]?.text ?? "Cevap alınamadı.";
                 ViewBag.answerAI = content;
             }
             else
             {
-                ViewBag.answerAI = "Bir hata oluştu: " + response.StatusCode;
+                var errorText = await response.Content.ReadAsStringAsync();
+                ViewBag.answerAI = "Bir hata oluştu: " + response.StatusCode + " - " + errorText;
             }
-
-
 
             return View(value);
         }

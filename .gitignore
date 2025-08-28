@@ -60,6 +60,10 @@ Thumbs.db
 ## Secret config
 appsettings.*.json
 secrets.json
+appsettings.json
+ApiProjeKampi.WebUI/appsettings.json
+
+
 
 
 ## EF Core Migrations (tamamını ignore et)

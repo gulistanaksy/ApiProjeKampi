@@ -1,13 +1,13 @@
- ✨ Yummy Projesi (Api Proje Kampı) – .NET 6
+ # ✨ Yummy Projesi (Api Proje Kampı) – .NET 6
  Temel API mantığını öğrenmek isteyenler için ideal bir başlangıç:
 
- • CRUD işlemleri, Controller ve DTO kullanımı
- • Mapping ve Validation mantığı
- • DbContext ve MSSQL veri tabanı bağlantısı
- • Entity Framework ve Code First yaklaşımı
- • API Swagger dokümantasyonu ile otomatik dökümantasyon
- • Yapay zeka ile kullanıcı mesajlarına otomatik cevap ve toksik mesaj analizi
- • SignalR ile yapay zeka destekli anlık chat özelliği
+ * CRUD işlemleri, Controller ve DTO kullanımı
+ * Mapping ve Validation mantığı
+ * DbContext ve MSSQL veri tabanı bağlantısı
+ * Entity Framework ve Code First yaklaşımı
+ * API Swagger dokümantasyonu ile otomatik dökümantasyon
+ * Yapay zeka ile kullanıcı mesajlarına otomatik cevap ve toksik mesaj analizi
+ * SignalR ile yapay zeka destekli anlık chat özelliği
 
 
 <img width="1311" height="712" alt="Yummy1_Swagger" src="https://github.com/user-attachments/assets/95a302e4-4155-494d-b856-79f127f45e6b" />
